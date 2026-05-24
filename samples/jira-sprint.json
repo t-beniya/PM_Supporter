@@ -1,0 +1,682 @@
+{
+  "expand": "schema,names,changelog",
+  "startAt": 0,
+  "maxResults": 50,
+  "total": 8,
+  "issues": [
+    {
+      "id": "10001",
+      "key": "AIPM-101",
+      "fields": {
+        "summary": "Connect sprint brief generator to Jira search",
+        "status": {
+          "name": "In Progress",
+          "statusCategory": {
+            "key": "indeterminate"
+          }
+        },
+        "assignee": {
+          "displayName": "Maya Chen"
+        },
+        "reporter": {
+          "displayName": "Rina Sato"
+        },
+        "priority": {
+          "name": "High"
+        },
+        "issuetype": {
+          "name": "Story"
+        },
+        "updated": "2026-05-09T14:35:00.000+0900",
+        "created": "2026-05-01T09:12:00.000+0900",
+        "duedate": "2026-05-13",
+        "labels": [
+          "mvp",
+          "jira"
+        ],
+        "components": [
+          {
+            "name": "Extension"
+          }
+        ],
+        "fixVersions": [
+          {
+            "name": "0.1.0"
+          }
+        ],
+        "comment": {
+          "comments": [
+            {
+              "author": {
+                "displayName": "Maya Chen"
+              },
+              "created": "2026-05-09T14:30:00.000+0900",
+              "body": {
+                "type": "doc",
+                "version": 1,
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Search request is wired. I am checking field coverage before review."
+                      }
+                    ]
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        "issuelinks": []
+      },
+      "changelog": {
+        "histories": [
+          {
+            "author": {
+              "displayName": "Maya Chen"
+            },
+            "created": "2026-05-09T14:35:00.000+0900",
+            "items": [
+              {
+                "field": "status",
+                "fromString": "To Do",
+                "toString": "In Progress"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "10002",
+      "key": "AIPM-102",
+      "fields": {
+        "summary": "Handle missing Jira permissions gracefully",
+        "status": {
+          "name": "Blocked",
+          "statusCategory": {
+            "key": "indeterminate"
+          }
+        },
+        "assignee": {
+          "displayName": "Noah Patel"
+        },
+        "reporter": {
+          "displayName": "Rina Sato"
+        },
+        "priority": {
+          "name": "Highest"
+        },
+        "issuetype": {
+          "name": "Bug"
+        },
+        "updated": "2026-05-06T16:10:00.000+0900",
+        "created": "2026-05-02T10:00:00.000+0900",
+        "duedate": "2026-05-08",
+        "labels": [
+          "blocked",
+          "auth"
+        ],
+        "components": [
+          {
+            "name": "Jira Connector"
+          }
+        ],
+        "fixVersions": [
+          {
+            "name": "0.1.0"
+          }
+        ],
+        "comment": {
+          "comments": [
+            {
+              "author": {
+                "displayName": "Noah Patel"
+              },
+              "created": "2026-05-06T16:08:00.000+0900",
+              "body": {
+                "type": "doc",
+                "version": 1,
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Blocked by missing decision on the minimum permission model for customer Jira sites."
+                      }
+                    ]
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        "issuelinks": [
+          {
+            "type": {
+              "outward": "blocks"
+            },
+            "outwardIssue": {
+              "key": "AIPM-107"
+            }
+          }
+        ]
+      },
+      "changelog": {
+        "histories": [
+          {
+            "author": {
+              "displayName": "Noah Patel"
+            },
+            "created": "2026-05-06T16:10:00.000+0900",
+            "items": [
+              {
+                "field": "status",
+                "fromString": "In Progress",
+                "toString": "Blocked"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "10003",
+      "key": "AIPM-103",
+      "fields": {
+        "summary": "Add Activity Bar sprint view",
+        "status": {
+          "name": "Code Review",
+          "statusCategory": {
+            "key": "indeterminate"
+          }
+        },
+        "assignee": {
+          "displayName": "Lena Ortiz"
+        },
+        "reporter": {
+          "displayName": "Rina Sato"
+        },
+        "priority": {
+          "name": "Medium"
+        },
+        "issuetype": {
+          "name": "Story"
+        },
+        "updated": "2026-05-10T08:20:00.000+0900",
+        "created": "2026-05-01T11:40:00.000+0900",
+        "duedate": "2026-05-12",
+        "labels": [
+          "ui"
+        ],
+        "components": [
+          {
+            "name": "Extension"
+          }
+        ],
+        "fixVersions": [
+          {
+            "name": "0.1.0"
+          }
+        ],
+        "comment": {
+          "comments": [
+            {
+              "author": {
+                "displayName": "Lena Ortiz"
+              },
+              "created": "2026-05-10T08:19:00.000+0900",
+              "body": {
+                "type": "doc",
+                "version": 1,
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Ready for review. Please check command labels and tree states."
+                      }
+                    ]
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        "issuelinks": []
+      },
+      "changelog": {
+        "histories": [
+          {
+            "author": {
+              "displayName": "Lena Ortiz"
+            },
+            "created": "2026-05-10T08:20:00.000+0900",
+            "items": [
+              {
+                "field": "status",
+                "fromString": "In Progress",
+                "toString": "Code Review"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "10004",
+      "key": "AIPM-104",
+      "fields": {
+        "summary": "Decide OAuth path for production Jira access",
+        "status": {
+          "name": "Waiting for Approval",
+          "statusCategory": {
+            "key": "indeterminate"
+          }
+        },
+        "assignee": {
+          "displayName": "Codex Agent"
+        },
+        "reporter": {
+          "displayName": "Rina Sato"
+        },
+        "priority": {
+          "name": "High"
+        },
+        "issuetype": {
+          "name": "Task"
+        },
+        "updated": "2026-05-05T09:00:00.000+0900",
+        "created": "2026-05-03T09:00:00.000+0900",
+        "duedate": "2026-05-15",
+        "labels": [
+          "security",
+          "decision-needed",
+          "ai-agent",
+          "approval-needed"
+        ],
+        "components": [
+          {
+            "name": "Jira Connector"
+          }
+        ],
+        "fixVersions": [],
+        "comment": {
+          "comments": [
+            {
+              "author": {
+                "displayName": "Rina Sato"
+              },
+              "created": "2026-05-05T09:00:00.000+0900",
+              "body": {
+                "type": "doc",
+                "version": 1,
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Agent is paused until a human approves the OAuth scope and token storage plan."
+                      }
+                    ]
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        "issuelinks": []
+      },
+      "changelog": {
+        "histories": []
+      }
+    },
+    {
+      "id": "10005",
+      "key": "AIPM-105",
+      "fields": {
+        "summary": "Create deterministic local brief fallback",
+        "status": {
+          "name": "Done",
+          "statusCategory": {
+            "key": "done"
+          }
+        },
+        "assignee": {
+          "displayName": "Maya Chen"
+        },
+        "reporter": {
+          "displayName": "Rina Sato"
+        },
+        "priority": {
+          "name": "Medium"
+        },
+        "issuetype": {
+          "name": "Story"
+        },
+        "updated": "2026-05-08T17:45:00.000+0900",
+        "created": "2026-05-01T14:00:00.000+0900",
+        "duedate": "2026-05-09",
+        "labels": [
+          "mvp"
+        ],
+        "components": [
+          {
+            "name": "Brief Generator"
+          }
+        ],
+        "fixVersions": [
+          {
+            "name": "0.1.0"
+          }
+        ],
+        "comment": {
+          "comments": [
+            {
+              "author": {
+                "displayName": "Rina Sato"
+              },
+              "created": "2026-05-08T17:40:00.000+0900",
+              "body": {
+                "type": "doc",
+                "version": 1,
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Fallback output is good enough for offline demos."
+                      }
+                    ]
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        "issuelinks": []
+      },
+      "changelog": {
+        "histories": [
+          {
+            "author": {
+              "displayName": "Maya Chen"
+            },
+            "created": "2026-05-08T17:45:00.000+0900",
+            "items": [
+              {
+                "field": "status",
+                "fromString": "Code Review",
+                "toString": "Done"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "10006",
+      "key": "AIPM-106",
+      "fields": {
+        "summary": "Spike: summarize Jira changelog signals",
+        "status": {
+          "name": "In Progress",
+          "statusCategory": {
+            "key": "indeterminate"
+          }
+        },
+        "assignee": {
+          "displayName": "Kenji Mori"
+        },
+        "reporter": {
+          "displayName": "Rina Sato"
+        },
+        "priority": {
+          "name": "Medium"
+        },
+        "issuetype": {
+          "name": "Spike"
+        },
+        "updated": "2026-05-04T15:05:00.000+0900",
+        "created": "2026-05-01T15:00:00.000+0900",
+        "duedate": "2026-05-14",
+        "labels": [
+          "research"
+        ],
+        "components": [
+          {
+            "name": "Brief Generator"
+          }
+        ],
+        "fixVersions": [],
+        "comment": {
+          "comments": [
+            {
+              "author": {
+                "displayName": "Kenji Mori"
+              },
+              "created": "2026-05-04T15:05:00.000+0900",
+              "body": {
+                "type": "doc",
+                "version": 1,
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Initial notes are in the branch. Need time to validate edge cases."
+                      }
+                    ]
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        "issuelinks": []
+      },
+      "changelog": {
+        "histories": [
+          {
+            "author": {
+              "displayName": "Kenji Mori"
+            },
+            "created": "2026-05-04T15:05:00.000+0900",
+            "items": [
+              {
+                "field": "status",
+                "fromString": "To Do",
+                "toString": "In Progress"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "10007",
+      "key": "AIPM-107",
+      "fields": {
+        "summary": "Verify Jira error states in extension host",
+        "status": {
+          "name": "QA Review",
+          "statusCategory": {
+            "key": "indeterminate"
+          }
+        },
+        "assignee": {
+          "displayName": "Ava Brooks"
+        },
+        "reporter": {
+          "displayName": "Rina Sato"
+        },
+        "priority": {
+          "name": "Medium"
+        },
+        "issuetype": {
+          "name": "Task"
+        },
+        "updated": "2026-05-08T11:25:00.000+0900",
+        "created": "2026-05-03T10:30:00.000+0900",
+        "duedate": "2026-05-10",
+        "labels": [
+          "qa"
+        ],
+        "components": [
+          {
+            "name": "Extension"
+          }
+        ],
+        "fixVersions": [
+          {
+            "name": "0.1.0"
+          }
+        ],
+        "comment": {
+          "comments": [
+            {
+              "author": {
+                "displayName": "Ava Brooks"
+              },
+              "created": "2026-05-08T11:20:00.000+0900",
+              "body": {
+                "type": "doc",
+                "version": 1,
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Waiting on AIPM-102 before I can finish the negative-path checks."
+                      }
+                    ]
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        "issuelinks": [
+          {
+            "type": {
+              "inward": "is blocked by"
+            },
+            "inwardIssue": {
+              "key": "AIPM-102"
+            }
+          }
+        ]
+      },
+      "changelog": {
+        "histories": [
+          {
+            "author": {
+              "displayName": "Ava Brooks"
+            },
+            "created": "2026-05-08T11:25:00.000+0900",
+            "items": [
+              {
+                "field": "status",
+                "fromString": "Code Review",
+                "toString": "QA Review"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "10008",
+      "key": "AIPM-108",
+      "fields": {
+        "summary": "Finalize brief template wording",
+        "status": {
+          "name": "Waiting for PO",
+          "statusCategory": {
+            "key": "indeterminate"
+          }
+        },
+        "assignee": {
+          "displayName": "Rina Sato"
+        },
+        "reporter": {
+          "displayName": "Rina Sato"
+        },
+        "priority": {
+          "name": "Low"
+        },
+        "issuetype": {
+          "name": "Task"
+        },
+        "updated": "2026-05-07T13:10:00.000+0900",
+        "created": "2026-05-04T13:00:00.000+0900",
+        "duedate": "2026-05-11",
+        "labels": [
+          "content",
+          "waiting"
+        ],
+        "components": [
+          {
+            "name": "Brief Generator"
+          }
+        ],
+        "fixVersions": [
+          {
+            "name": "0.1.0"
+          }
+        ],
+        "comment": {
+          "comments": [
+            {
+              "author": {
+                "displayName": "Rina Sato"
+              },
+              "created": "2026-05-07T13:10:00.000+0900",
+              "body": {
+                "type": "doc",
+                "version": 1,
+                "content": [
+                  {
+                    "type": "paragraph",
+                    "content": [
+                      {
+                        "type": "text",
+                        "text": "Waiting for PO sign-off on the final section names."
+                      }
+                    ]
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        "issuelinks": []
+      },
+      "changelog": {
+        "histories": [
+          {
+            "author": {
+              "displayName": "Rina Sato"
+            },
+            "created": "2026-05-07T13:10:00.000+0900",
+            "items": [
+              {
+                "field": "status",
+                "fromString": "In Progress",
+                "toString": "Waiting for PO"
+              }
+            ]
+          }
+        ]
+      }
+    }
+  ]
+}
