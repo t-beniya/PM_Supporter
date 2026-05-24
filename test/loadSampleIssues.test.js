@@ -19,6 +19,11 @@ Module._load = function patchedLoad(request, parent, isMain) {
         constructor(id) {
           this.id = id;
         }
+      },
+      workspace: {
+        getConfiguration: () => ({
+          get: (_key, defaultValue) => defaultValue
+        })
       }
     };
   }
@@ -26,6 +31,7 @@ Module._load = function patchedLoad(request, parent, isMain) {
 };
 
 const { _test } = require("../extension");
+const { redactSensitiveText } = require("../lib/sanitize");
 Module._load = originalLoad;
 
 test("loadSampleIssues returns bundled sample issues", () => {
@@ -116,6 +122,77 @@ test("normalizeTokenBrokerUrl rejects embedded credentials", () => {
     () => _test.normalizeTokenBrokerUrl("https://user:secret@broker.example.com/token"),
     /Do not include credentials/
   );
+});
+
+test("redactSensitiveText removes common secret shapes", () => {
+  const text = redactSensitiveText('Authorization: Bearer abcdefgh123456 {"access_token":"tok_123456789"} https://user:pass@example.com');
+
+  assert.match(text, /\[redacted\]/);
+  assert.doesNotMatch(text, /abcdefgh123456/);
+  assert.doesNotMatch(text, /tok_123456789/);
+  assert.doesNotMatch(text, /user:pass/);
+});
+
+test("toAiIssueDigest redacts sensitive Jira text before model prompts", () => {
+  const digest = _test.toAiIssueDigest({
+    key: "SEC-1",
+    fields: {
+      summary: "Rotate token=abc123456789 before release",
+      status: {
+        name: "In Progress",
+        statusCategory: {
+          key: "indeterminate"
+        }
+      },
+      assignee: {
+        displayName: "Alice password=hunter2"
+      },
+      labels: ["client_secret=supersecretvalue"],
+      components: [{ name: "Authorization: Bearer componentsecret123" }],
+      fixVersions: [{ name: "2026.05" }],
+      parent: {
+        key: "SEC-0",
+        fields: {
+          summary: "Parent apiKey=parentsecret123"
+        }
+      },
+      issuelinks: []
+    }
+  });
+
+  const serialized = JSON.stringify(digest);
+  assert.match(serialized, /\[redacted\]/);
+  assert.doesNotMatch(serialized, /abc123456789|hunter2|supersecretvalue|componentsecret123|parentsecret123/);
+});
+
+test("buildLocalSprintBrief redacts sensitive JQL and Jira text", () => {
+  const brief = _test.buildLocalSprintBrief([
+    {
+      key: "SEC-2",
+      fields: {
+        summary: "Investigate password=plainsecret123",
+        status: {
+          name: "To Do",
+          statusCategory: {
+            key: "new"
+          }
+        },
+        assignee: {
+          displayName: "Bob"
+        },
+        priority: {
+          name: "High"
+        },
+        labels: []
+      }
+    }
+  ], {
+    jql: "project = SEC AND token=secretjql123",
+    source: "source secret=sourcesecret123"
+  });
+
+  assert.match(brief, /\[redacted\]/);
+  assert.doesNotMatch(brief, /plainsecret123|secretjql123|sourcesecret123/);
 });
 
 function makeExtensionFixture(t, sampleText) {

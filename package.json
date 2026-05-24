@@ -15,12 +15,22 @@
     "LICENSE"
   ],
   "scripts": {
+    "setup:local": "powershell -NoProfile -ExecutionPolicy Bypass -File ./scripts/setup-local.ps1",
     "test": "node --test",
+    "test:local": "powershell -NoProfile -ExecutionPolicy Bypass -File ./scripts/test-local.ps1",
     "cosign:install": "sh ./scripts/install-cosign.sh",
+    "cosign:install:windows": "powershell -NoProfile -ExecutionPolicy Bypass -File ./scripts/install-cosign.ps1",
     "trivy:install": "sh ./scripts/install-trivy.sh",
+    "trivy:install:windows": "powershell -NoProfile -ExecutionPolicy Bypass -File ./scripts/install-trivy.ps1",
     "trivy:fs": "sh ./scripts/trivy-scan.sh .",
+    "trivy:fs:windows": "powershell -NoProfile -ExecutionPolicy Bypass -File ./scripts/trivy-scan.ps1 .",
+    "clean:ignored": "node ./scripts/clean-ignored.js --force",
+    "clean:ignored:dry-run": "node ./scripts/clean-ignored.js --dry-run",
+    "clean:ignored:check": "node ./scripts/clean-ignored.js --check",
+    "clean:ignored:all": "node ./scripts/clean-ignored.js --force --all",
+    "clean:ignored:dry-run:all": "node ./scripts/clean-ignored.js --dry-run --all",
     "precommit": "pre-commit run --all-files",
-    "precommit:install": "pre-commit install"
+    "precommit:install": "pre-commit install --hook-type pre-commit --hook-type pre-push"
   },
   "engines": {
     "vscode": "^1.85.0"

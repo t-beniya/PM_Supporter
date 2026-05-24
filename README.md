@@ -32,6 +32,36 @@ For GitHub Copilot or other VS Code model providers, choose `VS Code Language Mo
 
 If `F5` appears to do nothing, use `Ctrl+F5`. In some local setups the debug Extension Host can wait for the debugger and time out before the extension activates.
 
+## Local Host Setup (No Dev Container)
+
+Windows PowerShell can set up the host-side tools under the repo-local `.tools/` directory:
+
+```powershell
+powershell -NoProfile -ExecutionPolicy Bypass -File .\scripts\setup-local.ps1
+```
+
+For a faster unit-test-only setup, skip pre-commit and the security scanners:
+
+```powershell
+powershell -NoProfile -ExecutionPolicy Bypass -File .\scripts\setup-local.ps1 -SkipPreCommit -SkipSecurityTools
+```
+
+The setup script installs Node.js 22.x locally when a compatible host Node is not already available. It also installs Cosign and Trivy into `.tools\bin` unless `-SkipSecurityTools` is used. Pre-commit is installed through `pipx` when Python 3 is available on the host, or through a repo-local `uv` wrapper when Python is not available.
+
+After setup, either run the unit-test helper:
+
+```powershell
+powershell -NoProfile -ExecutionPolicy Bypass -File .\scripts\test-local.ps1
+```
+
+or add the repo-local tools to the current terminal and use the normal npm commands:
+
+```powershell
+Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass
+. .\scripts\local-env.ps1
+npm test
+```
+
 ## Jira Connection
 
 Example JQL:
@@ -115,6 +145,12 @@ Run the unit tests:
 npm test
 ```
 
+On Windows without a dev container, this helper also wires in the repo-local Node.js install:
+
+```powershell
+powershell -NoProfile -ExecutionPolicy Bypass -File .\scripts\test-local.ps1
+```
+
 Install and run pre-commit hooks:
 
 ```bash
@@ -128,6 +164,22 @@ Run the Trivy filesystem scan:
 npm run cosign:install
 npm run trivy:install
 npm run trivy:fs
+```
+
+Windows PowerShell equivalents:
+
+```powershell
+powershell -NoProfile -ExecutionPolicy Bypass -Command ". .\scripts\local-env.ps1; npm run cosign:install:windows"
+powershell -NoProfile -ExecutionPolicy Bypass -Command ". .\scripts\local-env.ps1; npm run trivy:install:windows"
+powershell -NoProfile -ExecutionPolicy Bypass -Command ". .\scripts\local-env.ps1; npm run trivy:fs:windows"
+```
+
+If `npm` is already on your host PATH, the shorter forms also work:
+
+```powershell
+npm run cosign:install:windows
+npm run trivy:install:windows
+npm run trivy:fs:windows
 ```
 
 The extension does not manage OpenAI or other model provider API keys.

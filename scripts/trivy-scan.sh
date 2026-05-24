@@ -13,6 +13,7 @@ trivy fs \
   --ignore-unfixed \
   --skip-version-check \
   --skip-dirs .git \
+  --skip-dirs .tools \
   --skip-dirs node_modules \
   --skip-dirs .vscode-test \
   --skip-dirs .devcontainer \

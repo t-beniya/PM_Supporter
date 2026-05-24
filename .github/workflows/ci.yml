@@ -15,10 +15,10 @@ jobs:
     runs-on: ubuntu-24.04
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@692973e3d937129bcbf406c39691491939621bbf # v4.1.7
 
       - name: Setup Node
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@601291d0385415eab7fe4ee98c1b8557624c0102 # v4.0.3
         with:
           node-version: 22
 
@@ -27,3 +27,21 @@ jobs:
 
       - name: Run tests
         run: npm test
+
+  security:
+    name: Security Scan
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout
+        uses: actions/checkout@692973e3d937129bcbf406c39691491939621bbf # v4.1.7
+
+      - name: Install Cosign
+        run: sudo sh ./scripts/install-cosign.sh
+
+      - name: Install Trivy
+        run: sudo sh ./scripts/install-trivy.sh
+
+      - name: Run Trivy filesystem scan
+        env:
+          TRIVY_CACHE_DIR: ${{ runner.temp }}/trivy-cache
+        run: sh ./scripts/trivy-scan.sh .
