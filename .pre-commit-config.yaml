@@ -4,26 +4,13 @@ default_stages:
   - pre-commit
 
 repos:
-  - repo: https://github.com/pre-commit/pre-commit-hooks
-    rev: v6.0.0
-    hooks:
-      - id: check-added-large-files
-        args:
-          - --maxkb=1024
-      - id: check-case-conflict
-      - id: check-illegal-windows-names
-      - id: check-json
-      - id: check-merge-conflict
-      - id: check-yaml
-      - id: detect-private-key
-      - id: end-of-file-fixer
-      - id: mixed-line-ending
-        args:
-          - --fix=lf
-      - id: trailing-whitespace
-
   - repo: local
     hooks:
+      - id: repository-hygiene
+        name: repository hygiene checks
+        entry: node ./scripts/pre-commit-checks.js
+        language: system
+
       - id: npm-test
         name: npm test
         entry: npm test
@@ -33,8 +20,16 @@ repos:
 
       - id: trivy-fs
         name: trivy filesystem scan
-        entry: sh ./scripts/trivy-scan.sh .
+        entry: node ./scripts/run-trivy.js .
         language: system
         pass_filenames: false
         stages:
-          - manual
+          - pre-commit
+
+      - id: ignored-files-cleanliness
+        name: ignored files cleanliness
+        entry: node ./scripts/clean-ignored.js --check
+        language: system
+        pass_filenames: false
+        stages:
+          - pre-push
