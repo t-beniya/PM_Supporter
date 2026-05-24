@@ -1,0 +1,255 @@
+{
+  "name": "jira-ai-pm-editor",
+  "displayName": "Jira AI PM Editor",
+  "description": "A VS Code extension for Project Managers and Scrum Masters to summarize Jira sprint health with optional AI assistance.",
+  "version": "0.0.1",
+  "publisher": "local",
+  "license": "MIT",
+  "files": [
+    "extension.js",
+    "lib/",
+    "media/",
+    "samples/",
+    "README.md",
+    "SECURITY.md",
+    "LICENSE"
+  ],
+  "scripts": {
+    "test": "node --test",
+    "cosign:install": "sh ./scripts/install-cosign.sh",
+    "trivy:install": "sh ./scripts/install-trivy.sh",
+    "trivy:fs": "sh ./scripts/trivy-scan.sh .",
+    "precommit": "pre-commit run --all-files",
+    "precommit:install": "pre-commit install"
+  },
+  "engines": {
+    "vscode": "^1.85.0"
+  },
+  "categories": [
+    "Other"
+  ],
+  "activationEvents": [
+    "onUri",
+    "onCommand:jiraAiPm.connectJira",
+    "onCommand:jiraAiPm.connectJiraWithOAuth",
+    "onCommand:jiraAiPm.completeJiraOAuthCallback",
+    "onCommand:jiraAiPm.connectJiraWithApiToken",
+    "onCommand:jiraAiPm.signOutJira",
+    "onCommand:jiraAiPm.configureJql",
+    "onCommand:jiraAiPm.refreshBoard",
+    "onCommand:jiraAiPm.generateSprintBrief",
+    "onCommand:jiraAiPm.loadSampleData",
+    "onCommand:jiraAiPm.generateSampleSprintBrief",
+    "onCommand:jiraAiPm.openAssigneeTiles",
+    "onCommand:jiraAiPm.configureAssistantProvider",
+    "onView:jiraAiPm.board"
+  ],
+  "main": "./extension.js",
+  "capabilities": {
+    "untrustedWorkspaces": {
+      "supported": false,
+      "description": "Jira AI PM Editor can read Jira data and optionally send issue summaries to VS Code Language Model providers, so it should only run in trusted workspaces."
+    }
+  },
+  "contributes": {
+    "configuration": {
+      "title": "Jira AI PM Editor",
+      "properties": {
+        "jiraAiPm.jiraBaseUrl": {
+          "type": "string",
+          "default": "",
+          "scope": "machine",
+          "description": "Selected Jira Cloud base URL. OAuth connections fill this automatically after site selection."
+        },
+        "jiraAiPm.jiraAuthMethod": {
+          "type": "string",
+          "enum": [
+            "oauth",
+            "apiToken"
+          ],
+          "default": "apiToken",
+          "scope": "machine",
+          "description": "Jira authentication method. API token is simple for local/internal use; OAuth 2.0 (3LO) is available for distributable or per-user consent flows."
+        },
+        "jiraAiPm.jiraOAuthClientId": {
+          "type": "string",
+          "default": "",
+          "scope": "machine",
+          "description": "Atlassian OAuth 2.0 (3LO) client ID for the Jira integration."
+        },
+        "jiraAiPm.jiraOAuthRedirectUri": {
+          "type": "string",
+          "default": "",
+          "scope": "machine",
+          "description": "Atlassian OAuth callback URL registered for this extension, for example vscode://local.jira-ai-pm-editor/atlassian-oauth."
+        },
+        "jiraAiPm.jiraOAuthScopes": {
+          "type": "string",
+          "default": "read:jira-work read:jira-user offline_access",
+          "scope": "machine",
+          "description": "Space-separated Atlassian OAuth scopes requested by AI PM."
+        },
+        "jiraAiPm.jiraOAuthTokenBrokerUrl": {
+          "type": "string",
+          "default": "",
+          "scope": "machine",
+          "description": "Optional HTTPS token broker endpoint for broad production distribution. Leave empty for individual or small internal use so OAuth stays local with VS Code SecretStorage."
+        },
+        "jiraAiPm.jiraOAuthCloudId": {
+          "type": "string",
+          "default": "",
+          "scope": "machine",
+          "description": "Selected Atlassian cloud ID for OAuth Jira API calls."
+        },
+        "jiraAiPm.jiraOAuthAccessTokenExpiresAt": {
+          "type": "number",
+          "default": 0,
+          "scope": "machine",
+          "description": "Internal expiry timestamp for the current Jira OAuth access token."
+        },
+        "jiraAiPm.defaultJql": {
+          "type": "string",
+          "default": "sprint in openSprints() ORDER BY priority DESC, updated DESC",
+          "description": "Default JQL used when fetching Jira issues."
+        },
+        "jiraAiPm.maxIssues": {
+          "type": "number",
+          "default": 50,
+          "minimum": 1,
+          "maximum": 100,
+          "description": "Maximum number of Jira issues to include in a sprint brief."
+        },
+        "jiraAiPm.includeSensitiveJiraFields": {
+          "type": "boolean",
+          "default": false,
+          "scope": "machine",
+          "description": "Fetch Jira reporter names, comments, and changelog entries for richer local-only heuristics. These fields are not sent to VS Code Language Model providers by AI PM."
+        },
+        "jiraAiPm.assistantProvider": {
+          "type": "string",
+          "enum": [
+            "local",
+            "vscodeLanguageModel"
+          ],
+          "default": "local",
+          "scope": "machine",
+          "description": "AI assistant provider used for sprint briefs and assignee tile advice."
+        },
+        "jiraAiPm.vscodeLanguageModelVendor": {
+          "type": "string",
+          "default": "",
+          "scope": "machine",
+          "description": "Optional VS Code Language Model vendor selector, for example copilot. Leave empty to use any available provider."
+        },
+        "jiraAiPm.vscodeLanguageModelFamily": {
+          "type": "string",
+          "default": "",
+          "scope": "machine",
+          "description": "Optional VS Code Language Model family selector, for example gpt-4o. Leave empty to use any available family."
+        },
+        "jiraAiPm.vscodeLanguageModelId": {
+          "type": "string",
+          "default": "",
+          "scope": "machine",
+          "description": "Optional exact VS Code Language Model id selector. Leave empty unless you need a specific model."
+        }
+      }
+    },
+    "commands": [
+      {
+        "command": "jiraAiPm.connectJira",
+        "title": "AI PM: Connect Jira"
+      },
+      {
+        "command": "jiraAiPm.connectJiraWithOAuth",
+        "title": "AI PM: Connect Jira with OAuth"
+      },
+      {
+        "command": "jiraAiPm.completeJiraOAuthCallback",
+        "title": "AI PM: Complete Jira OAuth Callback"
+      },
+      {
+        "command": "jiraAiPm.connectJiraWithApiToken",
+        "title": "AI PM: Connect Jira with API Token"
+      },
+      {
+        "command": "jiraAiPm.signOutJira",
+        "title": "AI PM: Sign Out Jira"
+      },
+      {
+        "command": "jiraAiPm.configureJql",
+        "title": "AI PM: Configure Jira JQL"
+      },
+      {
+        "command": "jiraAiPm.refreshBoard",
+        "title": "AI PM: Refresh Jira Board"
+      },
+      {
+        "command": "jiraAiPm.generateSprintBrief",
+        "title": "AI PM: Generate Sprint Brief from Jira"
+      },
+      {
+        "command": "jiraAiPm.loadSampleData",
+        "title": "AI PM: Load Sample Jira Data"
+      },
+      {
+        "command": "jiraAiPm.generateSampleSprintBrief",
+        "title": "AI PM: Generate Sprint Brief from Sample Data"
+      },
+      {
+        "command": "jiraAiPm.openAssigneeTiles",
+        "title": "AI PM: Open Assignee Tile Board"
+      },
+      {
+        "command": "jiraAiPm.configureAssistantProvider",
+        "title": "AI PM: Configure AI Assistant Provider"
+      }
+    ],
+    "viewsContainers": {
+      "activitybar": [
+        {
+          "id": "jiraAiPm",
+          "title": "AI PM",
+          "icon": "media/ai-pm.svg"
+        }
+      ]
+    },
+    "views": {
+      "jiraAiPm": [
+        {
+          "id": "jiraAiPm.board",
+          "name": "Jira Sprint"
+        }
+      ]
+    },
+    "menus": {
+      "view/title": [
+        {
+          "command": "jiraAiPm.refreshBoard",
+          "when": "view == jiraAiPm.board",
+          "group": "navigation"
+        },
+        {
+          "command": "jiraAiPm.generateSprintBrief",
+          "when": "view == jiraAiPm.board",
+          "group": "navigation"
+        },
+        {
+          "command": "jiraAiPm.loadSampleData",
+          "when": "view == jiraAiPm.board",
+          "group": "navigation"
+        },
+        {
+          "command": "jiraAiPm.openAssigneeTiles",
+          "when": "view == jiraAiPm.board",
+          "group": "navigation"
+        },
+        {
+          "command": "jiraAiPm.configureAssistantProvider",
+          "when": "view == jiraAiPm.board",
+          "group": "navigation"
+        }
+      ]
+    }
+  }
+}
